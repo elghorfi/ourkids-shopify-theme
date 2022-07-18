@@ -1,0 +1,15 @@
+{% assign currencySize = 8 %}
+{% assign currencyCodes = "USD AUD CAD EUR RUB SEK CHF GBP AED " | rstrip | split: ' ' %}
+{% assign currencySymbols = "$ $ $ € руб kr CHF £ Dhs " | rstrip | split: ' ' %}
+{% assign defaultCurrencyCode = "USD" %}
+{% assign defaultCurrencySymbol = "$" %}
+
+    {% if shop.enabled_currencies.size > 1 %}
+        {% include 'scm-currency-switcher-02' %}
+        <style>
+
+            .sca-currency-style,.select-currency{
+                    display: none;
+                }
+        </style>
+    {% endif %}

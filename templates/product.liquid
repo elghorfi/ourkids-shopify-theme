@@ -1,0 +1,43 @@
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% if canonical_url contains "2018-new-design-modren-design-hello-kitty-pink-leather-children-bedroom-for-girls" or canonical_url contains "mother-daughter-dresses-floral-dress-casual-family-clothes-girls-dress-mother-daughter-summer-printed-dresses-drop-shipping"  %}
+    <script>    
+      //window.location.replace("/pages/ilife-v7s-plus-robot-vacuum-cleaner-sweep-and-wet-mopping-floors-carpet-run-120mins-auto-reharge-appliances-household-tool-dust")
+    </script>
+{% endif %}
+
+
+{% section 'product-template' %}
+{% section 'releted_upsell_popup' %}
+    <div class="page-width">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Neon Type 7 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-1164486976906720"
+     data-ad-slot="3126629821"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+    </div>
+{% section 'related-product' %}
+
+
+
+<script>
+  // Override default values of shop.strings for each template.
+  // Alternate product templates can change values of
+  // add to cart button, sold out, and unavailable states here.
+  theme.productStrings = {
+    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+    soldOut: {{ 'products.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }}
+  }
+</script>
+
+{% include 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: true, auto_install: true %}
+{% include 'judgeme_widgets', widget_type: 'judgeme_preview_badge', concierge_install: true, auto_install: true %}

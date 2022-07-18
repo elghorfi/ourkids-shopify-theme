@@ -1,0 +1,25 @@
+{{ "classie.js" | asset_url | script_tag }}                {{ "cs-skin-elastic.css" | asset_url | stylesheet_tag }}                {{ "selectFx.js" | asset_url | script_tag }}                        <style>
+        {% for currency in shop.enabled_currencies %}
+        .cs-skin-elastic .cs-options li.flag-{{ currency.iso_code  }} span {
+                                                                           background-image: url(//cdn.secomapp.com/currency_switcher/assets/img/flags/{{ currency.iso_code  | downcase }}.png);
+                                                                       }
+        {% endfor %}
+        .cs-skin-elastic .cs-options li.flag-{{ cart.currency.iso_code }}{
+            display: none;
+        }
+    </style>
+    <div class="sca-body-currency">
+                <div class="sca-currency-style">
+            <select id="currencies" name="currencies" class="cs-select cs-skin-elastic" style="display: none;">
+                <option value="{{ cart.currency.iso_code }}" data-class="flag-{{ cart.currency.iso_code }}" selected="selected">{{ cart.currency.iso_code }}</option>
+                {% for currency in shop.enabled_currencies %}
+                {% if currency != cart.currency %}
+                <option value="{{ currency.iso_code  }}" data-class="flag-{{ currency.iso_code  }}">{{ currency.iso_code  }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+
+

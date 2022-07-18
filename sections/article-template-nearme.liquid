@@ -1,0 +1,945 @@
+<span style="display: none;" id="blogCount">
+    {{ blog.articles_count }} 
+</span>
+
+{% assign article_content = article.content | split: ":" %}
+{% assign City = article_content[0] %}
+{% assign State = article_content[1] %}
+{% assign ST = article_content[2] %}
+{% assign NameOfStateResidents = article_content[3] %}
+{% if NameOfStateResidents == "" %} 
+  {% assign NameOfStateResidents = "People in " | append: article_content[1] %}
+{% endif %}
+{% assign StateNickname = article_content[4] %}
+{% assign StateHandle = article_content[5] %}
+
+<style>
+  {% if section.settings.enable_parallax%}
+  .collection-hero__image {  
+    position: relative;
+    height: 40vh;
+    background-attachment: fixed;
+    background-position: left center;
+    background-size: cover;
+  }
+  @media only screen and (max-width:749px) { 
+    .collection-hero__image {
+      height: 50vh;
+    }  
+  }
+  {% endif %}
+
+  .shopbyAge_badge p {
+    text-align: center;
+  }
+
+  .shopbyAge_badge img {
+    margin: 0 auto;
+  }
+  
+  .banner{
+    width: 100%;
+    height: 500px;
+    background-image: url("{{ 'nearme-banner.png' | asset_img_url: 'master' }});");
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 130px;
+  }
+  
+  .page-width{
+    display: none;
+  }
+
+  .over_image_content {
+    display: block;
+  }
+
+  .section-freeItem{
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+  }
+  
+  .section-freeItem img{
+    height: 90px;
+  }
+
+  .section-freeItem p{
+    font-size: 35px;
+    font-weight: bold;
+    padding: 20px;
+    color: #fff;
+  }
+
+  h2.section_heading{
+    text-align: center;
+    padding: 45px 25px 25px 25px;
+    font-size: 42px;
+    font-weight: bold;
+  }
+
+  .Section_2_columns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 30px;
+  }
+
+  .Section_2_columns div p{
+    text-align: justify;
+  }
+
+  .section_badges {
+    background: #DC4B99;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 25px;
+    padding: 26px 100px;
+  }
+
+  .jdgm-carousel-item__review-body > p {
+    font-size: large !important;
+  }
+
+  .jdgm-carousel-wrapper .jdgm-carousel-item__review {
+    height: auto;
+  }
+
+  .jdgm-carousel-item__product{
+    border-bottom: none !important;
+  }
+
+  .jdgm-star {
+    color: #ffcb00 !important;
+  }
+
+  .cta, .cta-amazon{
+    color: #fff;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: #f042a8;
+      padding: 22px !important;
+      border-radius: 4px;
+      display: inline-block;
+      border: none;
+      transition: all 0.4s ease 0s;
+      font-weight: bold;
+      font-size: 33px;
+  }
+
+  .cta-amazon{
+    background: #ffcb00;
+    margin-left: 20px;
+  }
+
+  .cta:hover, .cta-amazon:hover {
+    background: #434343;
+    letter-spacing: 1px;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.4s ease 0s;
+  }
+
+  .section_badges img{
+    height: 95%;
+    margin: auto;
+  }
+
+  .text_center{
+    text-align: center;
+  }
+
+  .section_shopByAge, 
+  .section_three_steps_pink, 
+  .section_recommend,
+  .section_alreadyKnow{
+    background: #E9B8B8;
+  }
+
+  .shopByAge_badges, 
+  .alreadyKnow_badges {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .shopbyAge_badge{
+    display: grid;
+    justify-content: center;
+    grid-gap: 10px;
+  }
+
+  .shopbyAge_badge p {
+    margin: 0 auto;
+  }
+
+  .products_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0 auto;
+    width: 70%;
+    grid-gap: 35px;
+  }
+
+  .products_grid {
+    font-size: 22px;
+  }
+  
+  .product_item {
+    padding: 20px;
+    background: #fff;
+    margin: 15px;
+    display: grid;
+    border-radius: 20px;
+  }
+
+  .buy_button {
+    background: #E85A5A;
+    color: #fff;
+    padding: 10px 28px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 19px;
+  }
+  
+  .buy_button:hover{
+    background: #EB448A;
+  }
+  
+  .three_steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+  }
+
+  .steps_list_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .steps_list li {
+    font-size: 35px;
+    font-weight: bold;
+    list-style: none;
+    color:#707070;
+  }
+
+  .steps_img img {
+    height: 85%;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    border-radius: 5px;
+  }
+
+  .babyToys_badges {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .babyToys_badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;    
+    padding: 5px;
+    width: 33%;
+  }
+
+  .babyToys_badge:hover{
+    background: #ffdb4d;
+  }
+
+  .alreadyKnow_badge {
+    text-align: center;
+  }
+ 
+  .categories_list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0;
+    width: 75%;
+    margin: 0 auto !important;
+    list-style-image: url('{{ "list-style.png" | asset_img_url: "small" }}') !important;
+  }
+
+  .fa {
+    padding: 45px;
+    font-size: 60px !important;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+    color: white;
+  }
+
+  .fa:hover {
+      opacity: 0.7;
+  }
+
+  .fa-facebook {
+    background: #3B5998;
+  }
+
+  .fa-twitter {
+    background: #55ACEE;
+  }
+  .fa-instagram {
+    background: #125688;
+  }
+
+  .fa-pinterest {
+    background: #cb2027;
+  }
+
+  .fa-tumblr {
+    background: #2c4762;
+  }
+
+  .fa-youtube {
+    background: #bb0000;
+  }
+
+  .section_social {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .section_cta {
+    text-align: center;
+  }
+
+  
+  p, .aboutOKS{
+    padding: 0 20px 20px 20px;
+  }
+  
+  p{
+    font-size: 33px;
+  }
+
+  .category_list{
+    font-size: 30px;
+    list-style-image: url('{{ "list-style.png" | asset_img_url: "small" }}') !important;
+  }
+
+  
+  .jdgm-carousel-wrapper .jdgm-carousel-item__review {
+    height: auto;
+  }
+  
+  @media only screen and (min-width: 601px) and (max-width: 900px) {
+    p {
+      font-size: 15px;
+    }
+    
+    h2.section_heading {
+      font-size: 33px;
+    }
+  
+    .products_grid {
+      width: 80%;
+    }
+
+    .product_item p{
+      padding: 0px;
+    }
+
+    .buy_button{    
+      font-size: 12px;
+    }
+
+    .steps_list li {
+      font-size: 22px;
+    }
+
+    .babyToys_badge{    
+      flex-direction: column;
+    }
+
+    .babyToys_badge p{
+      text-align: center;
+    }
+
+    .alreadyKnow_badges{
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .category_list {
+      font-size: 15px;
+    }
+  }
+
+  @media only screen and (min-width: 901px) and (max-width: 1024px) {
+    p {
+      font-size: 18px;
+    }
+
+    .product_item p{
+      font-size: 14px;
+    }
+
+    .steps_list li {
+      font-size: 30px;
+    }
+    
+    .babyToys_badge{    
+      flex-direction: column;
+    }
+
+    .babyToys_badge p{
+      text-align: center;
+    }
+
+    .category_list {
+      font-size: 23px;
+    }
+
+  }
+
+
+  @media only screen and (max-width: 600px) {
+    h2.section_heading {
+      padding: 20px 5px;
+      font-size: 25px;
+      font-weight: bold;
+      background: #f9c8e5;;
+    }
+
+    .jdgm-carousel-item__review-body > p {
+      font-size: small !important;
+    }
+
+    .cta{
+      margin: 20px;
+      padding: 17px !important;
+      font-size: 27px;
+    }
+
+    .fa{
+      padding: 13px;
+      font-size: 25px !important;
+      width: 50px;
+      height: 50px;
+    }
+
+    .Section_2_columns{
+      grid-template-columns: repeat(1, 1fr);
+      padding: 0 20px;
+    }
+
+    .section-freeItem img {
+      height: 50px;
+      margin: 25px;
+    }
+    .section-freeItem {
+      height: 70px;
+    }
+    .section-freeItem p {
+      font-size: 19px;
+    }
+
+    .banner{
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+      padding: 0 45px;
+    }
+
+    h3.logo_subheading{
+      margin: 0;
+      padding: 20px 0 0px 0px;
+    }
+
+    p.text_center, p {
+      padding: 0px 20px;
+      font-size: 19px !important;    
+      text-align: center !important;
+    }    
+
+    .shopbyAge_badge p {
+        white-space: nowrap;
+    }
+    .section_badges{
+      grid-gap: 5px;
+      padding: 15px 9px;
+    }
+
+    .shopbyAge_badge {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 14px;
+      border: 1px solid #d0abab;
+      margin: 3px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .shopbyAge_badge img{
+      margin: 0 auto;
+    }
+
+    .shopByAge_badges {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .products_grid {
+      grid-template-columns: repeat(1, 1fr);
+      width: 100%;
+    }
+
+    .three_steps {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .babyToys_badges {
+     flex-direction: column;
+    }
+
+    .babyToys_badge {
+      width: 100%;
+    }
+
+    .alreadyKnow_badges{
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 19px;
+      padding: 0px 0 10px 0;
+    }
+
+    .steps_list li {
+      font-size: 27px;
+      padding: 5px;
+    }
+
+    .categories_list {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  
+  }
+
+</style>
+{% if section.settings.show_blog_image %}
+<div class="collection-hero">
+  <div class="collection-hero__image ratio-container lazyload js"
+       data-bgset="{% include 'bgset', image: section.settings.image %}"
+       data-sizes="auto"
+       data-parent-fit="cover"
+       style="background-image: url('{{ section.settings.image | img_url: '1600x' }});"></div>
+  <noscript>
+    <div class="collection-hero__image" style="background-image: url({{ section.settings.image | img_url: '2048x600', crop: 'top' }});"></div>
+  </noscript>
+  <div class="collection-hero__title-wrapper">
+    <div class="over_image_content page-width text-center">
+      <h1 class="heading">{{article.title}}</h1>           
+    </div>
+  </div>
+</div>
+{% endif %}
+<article>
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="rte">
+        <div class="banner section_1">
+          <a href="/" style="text-decoration: none;">
+            <div class="logo">
+              <img class="lazyload js"
+                   src="//cdn.shopify.com/s/files/1/0013/8303/9045/files/logo_transparent2_300x300.png?v=1532999542"
+                   data-src="//cdn.shopify.com/s/files/1/0013/8303/9045/files/logo_transparent2_300x300.png?v=1532999542"
+                   alt="Our Kids Shop"
+                   >
+            </div>
+          </a>
+          <h3 class="logo_subheading">
+            {{article.title}}
+          </h3>
+        </div> 
+      
+
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6018909884659133"
+            crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-6018909884659133"
+            data-ad-slot="8754567111"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+
+        <div class="section-freeItem section_2">
+          <img src="{{ "star.png" | asset_img_url: 'master' }}" alt="GET FREE PRODUCT WHEN YOU SPEND 50$">
+          <p>GET FREE PRODUCT WHEN YOU SPEND +70$</p>
+        </div>
+
+        <h2 class="section_heading">Socialize With Us!</h2>
+        <div class="section_social">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+          <a href="https://www.facebook.com/OurKids.Shop.Official/" target="_blank" class="fa fa-facebook"></a>
+          <a href="https://twitter.com/OurkidsShop" target="_blank" class="fa fa-twitter"></a>
+          <a href="https://www.instagram.com/ourkids.shop.official/" target="_blank" class="fa fa-instagram"></a>
+          <a href="https://www.pinterest.com/ourkidsshop/" target="_blank" class="fa fa-pinterest"></a>
+          <a href="https://ourkidsshop.tumblr.com/" target="_blank" class="fa fa-tumblr"></a>
+          <a href="https://www.youtube.com/channel/UCuN-0XE5qbtQAmOnTkaGzQA" target="_blank" class="fa fa-youtube"></a>
+        </div>
+        
+        <div class="secion_2_columns section_3">
+          <h2 class="section_heading">Premium Quality Educational <br>
+            Children's Toys in {{State}}, {{City}}</h2>
+          <div class="Section_2_columns">
+            <div class="column1 column">
+              <p>Combining the high quality of classic heirloom toys with the convenience of ordering from online toy stores, Our Kids Shop offers products that can connect generations and last for years. These durable toys and games will provide hours of entertainment and help children learn through playtime.</p>
+              <br>
+              <p>Our Kids Shop is a family-run company that has been in operation since years. We do understand the value of bringing families together and items that last. As a company, we believe that children are the most important things in life. That’s why it’s our mission to bring you premium, educational children’s toys to help kids grow into creative, imaginative people. </p>
+            </div>
+            <div class="column2 column1">
+              <img src="{{ 'premium-quality.png' | asset_img_url: 'master' }}" alt="Premium Quality Educational Children's Toys in {{State}}, {{City}}">
+            </div>
+          </div>
+        </div>
+
+        <div class="section_badges section_4">
+          <img src="{{ 'baby-boy.png' | asset_img_url: 'master' }}" alt="">
+          <img src="{{ 'baby-clothes.png' | asset_img_url: 'master' }}" alt="">
+          <img src="{{ 'blocks.png' | asset_img_url: 'master' }}" alt="">
+          <img src="{{ 'baby-socks.png' | asset_img_url: 'master' }}" alt="">
+          <img src="{{ 'abacus.png' | asset_img_url: 'master' }}" alt="">
+        </div>
+
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6018909884659133"
+            crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-format="autorelaxed"
+            data-ad-client="ca-pub-6018909884659133"
+            data-ad-slot="5553688705"></ins>
+      <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+
+        <div class="section_shopByAge section_5">
+          <h2 class="section_heading"> Shop By Age!</h2>
+          <p class="text_center">At Our Kids online toy store, we offer a wide range of educational toys and games for children of all ages. From classic toys for infant development to outdoor science and exploration gear for older children, we’ve crafted and curated a selection of high-quality toys to inspire learning and discovery. </p>
+          <div class="shopByAge_badges">
+            <div class="shopbyAge_badge">
+              <img src="{{ '0-12-months.png' | asset_img_url: 'small' }}" alt="">
+              <p>0-12 months</p>
+            </div>
+            <div class="shopbyAge_badge">
+              <img src="{{ '12-24months.png' | asset_img_url: 'small' }}" alt="">
+              <p>12-24 months</p>
+            </div>
+            <div class="shopbyAge_badge">
+              <img src="{{ '2-3years.png' | asset_img_url: 'small' }}" alt="">
+              <p>2-3 years</p>
+            </div>
+            <div class="shopbyAge_badge">
+              <img src="{{ '3-5years.png' | asset_img_url: 'small' }}" alt="">
+              <p>3-5 years</p>
+            </div>
+            <div class="shopbyAge_badge">
+              <img src="{{ '5-8years.png' | asset_img_url: 'small' }}" alt="">
+              <p>5-8 years</p>
+            </div>
+            <div class="shopbyAge_badge">
+              <img src="{{ '8yearsplus.png' | asset_img_url: 'small' }}" alt="">
+              <p>+8 years</p>
+            </div>
+        </div>
+        </div>
+
+        <div class="section_cta section_17"><br>
+          <a href="/collections/all" class="cta">
+            BUY THE BEST — NOW!
+          </a>
+          <a class="cta-amazon" href="#amazonlink" id="amazonlink">
+            Shop Amazon 🥳
+          </a>
+        </div>
+
+        <div class="secion_2_columns section_6">
+          <h2 class="section_heading">Premium Quality Educational!
+            Children's Toys in {{State}}, {{City}}</h2>
+          <div class="Section_2_columns">
+            <div class="column2 column1">
+              <img src="{{ 'we-dont-just-sell.png' | asset_img_url: 'master' }}" alt="Premium Quality Educational Children's Toys in {{State}}, {{City}}">
+            </div>
+            <div class="column1 column">
+              <p>We offer phenomenal collections of kids’ toys online that encourage early development, promote learning, and stimulate the imagination. At Our Kids, you can buy toys and games for all age groups that the whole family will love!</p>
+              <p>Our family-owned and operated German toy company has been creating educational and fun children’s toys and games for over 80 years. We have impressive selections of quality toys for babies, toddlers, and children.</p>
+              <p>Our products are designed for parents and grandparents to enjoy with the special little ones in their lives. Your family will cherish the fun memories they create while playing, laughing, and learning with Our Kids toys for years to come.</p>
+            </div>
+          </div><br>
+          <p>Feel confident you’re buying children’s toys that strengthen crucial developmental skills, benefit educational growth, inspire playful activity, and spark creativity. Explore incredible collections of kids’ toys online, here at Our Kids!.</p>
+        </div>
+
+        <div class="section_recommend section_7">
+          <h2 class="section_heading"> We Do Recommend These Products for {{State}}, City</h2>
+          <p class="text_center">In State, City Our Kids provides heirloom-quality children’s toys that are perfect for any type of play. Teach your children problem-solving skills with our collection of educational board games or practice empathy with puppets and soft, washable baby dolls. Explore our entire selection of products by category and create memories that will last a lifetime.</p>
+          {% include 'related-articles-blog' %}
+
+        </div>
+
+        <div class="section_purchase_toys section_8">
+          <h2 class="section_heading">Purchase Toys in {{City}}, from OurKids Shop</h2>
+          <p class="text_center">
+            It doesn’t take a long or hard look to realize how and why OurKids.shop has become the darling of the Baby toys world — or {{State}}, {{City}}. But, just for fun, let’s check out the highlights reel…
+          </p>
+        </div>
+
+        <div class="section_three_steps section_9">
+          <h2 class="section_heading"> Three Steps to Reduce Stress During the Holidays in {{State}}, {{City}}</h2>
+          <p class="text_center">
+            In the whole world -- or in {{City}}, The holiday is the most wonderful time of the year. And also the most stressful. Shopping, decorating, planning, traveling, visitors, and when you have kids, there are pageants, recitals, crafts, and Christmas breaks.
+          </p>
+          <p>You can’t eliminate all the stress but with these simple tips, you can reduce it back to wonderful.</p>
+        </div>
+
+        <div class="section_three_steps_pink section_10">
+          <div class="three_steps">
+            <div class="steps_list_container">
+              <ul class="steps_list">
+                <li>#1 Shop Early</li>
+                <li>#2 Rotate the Toys</li>
+                <li>#3 Get the Kids Involved</li>
+              </ul>
+            </div>
+            <div class="steps_img">
+              <img src="{{ 'steps_img.png' | asset_img_url: 'master' }}" alt="">
+            </div>
+          </div>
+        </div>
+
+        <div class="section_cta section_17"><br>
+          <a href="/collections/all" class="cta">
+            BUY THE BEST — NOW!
+          </a>
+          
+          <a class="cta-amazon" href="#amazonlink" id="amazonlink">
+            Shop Amazon 🥳
+          </a>
+        </div>
+
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6018909884659133"
+            crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+            style="display:block; text-align:center;"
+            data-ad-layout="in-article"
+            data-ad-format="fluid"
+            data-ad-client="ca-pub-6018909884659133"
+            data-ad-slot="8754567111"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+
+        <div class="section_babyToys section_11">
+          <h2 class="section_heading"> Baby Toys - OurKids Shop in {{StateNickname}}</h2>
+        <p>
+          For {{NameOfStateResidents}}s, Most of people are thinking that baby toys has a big effect on their childs, and choosing the right toys is very important, parents can use these toys to teach their kids a lot of stuff. and this is why they choose Our Kids shop.<br>
+          We Don’t Just Sell Toys! We believe in toys role. and this is why you {{NameOfStateResidents}} must buy from OurKids Shop:
+        </p>
+
+          <div class="babyToys_badges">
+            <div class="babyToys_badge">
+              <img src="{{ 'star-2.png' | asset_img_url: 'small' }}" alt="">
+              <p>A third of all Americans have tried Our Shop.</p>
+            </div>
+            <div class="babyToys_badge">
+              <img src="{{ 'star-2.png' | asset_img_url: 'small' }}" alt="">
+              <p>Americans drop an average of $20 to $80 per month on Our products.</p>
+            </div>
+            <div class="babyToys_badge">
+              <img src="{{ 'star-2.png' | asset_img_url: 'small' }}" alt="">
+              <p>We grow everyday with our customers trust & recommendations Especially in {{State}}.</p>
+            </div>
+          </div><br>
+          <p>
+            The exact trends and numbers in {{StateNickname}} may deviate from the national ones, but there’s no denying that Our store is one of the best ones selling Baby toys in {{State}}.
+          </p>
+        </div>
+
+        <div class="section_alreadyKnow section_12">
+          <h2 class="section_heading">
+            Yup! Already Know What Makes 'em Smile?
+          </h2>
+          <div class="alreadyKnow_badges">
+            <div class="alreadyKnow_badge">
+              <img src="{{ 'plush-toys.png' | asset_img_url: 'small' }}" alt="">
+              <p>Plush toys</p>
+            </div>
+            <div class="alreadyKnow_badge">
+              <img src="{{ 'musical-toys.png' | asset_img_url: 'small' }}" alt="">
+              <p>Musical toys</p>
+            </div>
+            <div class="alreadyKnow_badge">
+              <img src="{{ 'play-gyms.png' | asset_img_url: 'small' }}" alt="">
+              <p>Play gyms</p>
+            </div>
+            <div class="alreadyKnow_badge">
+              <img src="{{ 'ride-ons.png' | asset_img_url: 'small' }}" alt="">
+              <p>Ride-ons</p>
+            </div>
+            <div class="alreadyKnow_badge">
+              <img src="{{ 'bikes-trikes.png' | asset_img_url: 'small' }}" alt="">
+              <p>Bikes, trikes & scooters</p>
+            </div>
+            <div class="alreadyKnow_badge">
+              <img src="{{ 'activity-walkers.png' | asset_img_url: 'small' }}" alt="">
+              <p>Activity walkers & tables</p>
+            </div>
+          </div>
+          </div>
+
+        <div class="section_amazon section_13">
+          <h2 class="section_heading">
+            Shop From Amazon
+          </h2>
+          <script type="text/javascript">
+            amzn_assoc_placement = "adunit0";
+            amzn_assoc_tracking_id = "ourkidsshop-20";
+            amzn_assoc_ad_mode = "manual";
+            amzn_assoc_ad_type = "smart";
+            amzn_assoc_marketplace = "amazon";
+            amzn_assoc_region = "US";
+            amzn_assoc_linkid = "36cfba2a083d54966e4e251bb3a90de7";
+            amzn_assoc_asins = "B00LZKC1S8,B0010SGZEG,B00YTWEMUO,B000BNCA4K,B0148NCN9A,B07Z38QXJF,B083ZZSGLR,B00005RF5G,B08DV6R3HK,B078WM314M,B079JL2FSY,B08HRDND11,B08LMYXHD5,B08JKZ1QSN,B07TSH91YT,B08X2DZPQ6,B07QYGLLKZ,B07WHJQYMN,B07R5V5592";  amzn_assoc_title = "";
+            amzn_assoc_search_bar = "false";
+            </script>
+            <script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script>
+        </div>
+
+        <div class="section_clamoring section_14">
+          <h2 class="section_heading">
+            Why People in {{City}}, {{State}} are Clamoring for OurKids Shop?
+          </h2>
+          <p>By now, you know OurKidsShop’s no joke and that many members of your community in {{City}} take it — literally and figuratively — very seriously!</p>
+          <p>This is a good thing! This means {{City}}, {{State}} consumers are paying attention to their baby toys. Their due diligence is so vital.</p>
+          <p>As the saying goes: “Anything worth doing, it’s worth doing right.” Including shopping around for, buying, and using only the absolute best quality of Baby Toys available to you. Hopefully, you only want the purest, most effective baby toys going into and onto your family, too. (You deserve it, superstar!).</p>
+          <p>We are completely attuned to this — it’s practically our mantra. People in your area love our products because we care.</p>
+          <p>Plus, we show you the love you won’t get from many other baby toys & games retailers. With you in mind, we’ve made the online shopping experience easy, informative, and enjoyable. And, our knowledgeable, friendly staff provides unparalleled service.</p>
+          <p>Combined, this promises to make your journey better than if you visited every baby toys retailer in {{State}}. </p>
+           <p>But don’t take our word for it — the people of {{City}}, {{State}} have spoken. Here’s what they’ve got to say….</p>
+        </div>
+        {% include 'judgeme_widgets', widget_type: 'judgeme_featured_carousel', concierge_install: false %}
+
+  
+        <div class="section_subscribe section_15">
+          <h2 class="section_heading">
+            Get Special Deals in {{City}} only for you!
+          </h2>
+          <div class="section_announcify_subscribe" id="section_announcify_subscribe"></div>
+        </div>
+
+        <div class="section_mailTo_Categories section_16">
+          <h2 class="section_heading">
+            Does OurKidsShop Mail to {{City}}, {{State}}?
+          </h2>
+          <p>
+            Yes We do! We ship everywhere. This is just one of the aspects that make ordering Our products online such a win for you and all your friends in {{City}}.<br>
+            Don't worry about shipping. you just order and we bring it till your hand.
+          </p>
+          <h2 class="section_heading">
+            What Categories We Sell In {{State}}?
+          </h2>
+          <p>On Our Store we can find a lot of products, you can shop by Age, by Category, and much more...</p>
+          <ul class="categories_list">
+            <div class="categories_list_col1">
+              <li class="category_list">BABIES</li>
+              <li class="category_list">EDUCATIONAL</li>
+              <li class="category_list">ONE PIECE</li>
+              <li class="category_list">PLUSH TOYS</li>  
+              <li class="category_list">A LOT MORE...</li>  
+            </div>
+            <div class="categories_list_col2">
+              <li class="category_list">BOYS</li>
+              <li class="category_list">CLOTHING</li>
+              <li class="category_list">SHOES</li>
+              <li class="category_list">UNDER 50$</li>  
+            </div>
+            <div class="categories_list_col3">
+              <li class="category_list">GIRLS</li>
+              <li class="category_list">MOMS</li>
+              <li class="category_list">HOBBIES</li>
+              <li class="category_list">BACK TO SCHOOL</li>  
+            </div>
+            </ul>
+      
+        </div>
+
+        <div class="section_cta section_17"><br>
+          <p class="text_center aboutOKS">
+            We came up with the proposal to offer international trends in health and fashion and care for you and your babies, kids.
+          </p>
+          <a href="/collections/all" class="cta">
+            BUY THE BEST — NOW!
+          </a>
+          <a class="cta-amazon" href="#amazonlink" >
+            Shop Amazon 🥳
+          </a>
+        </div>
+
+      </div>
+       <hr>
+      {% if section.settings.show_share_buttons %}
+      {% include 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article.image %}
+      {% endif %}
+    </div>
+  </div>
+</article>
+{% schema %}
+  {
+    "name": "Posts",
+    "settings": [
+	  {
+        "type": "text",
+        "id": "heading_title",
+        "label": "Heading",
+        "default": "News Detail"
+      },  
+      {
+        "type": "checkbox",
+        "id": "show_blog_image",
+        "label": "Show Banner image",
+        "default": true
+      },     
+      {
+        "type": "checkbox",
+        "id": "enable_parallax",
+        "label": "Enable Parallax"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Banner Image"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}
+
+<script>
+  let links = ['https://amzn.to/3zRtQiZ', 'https://amzn.to/39HfMxw', 'https://amzn.to/3HzoBGg', 'https://amzn.to/3O5MEPs', 'https://amzn.to/3n1e8Kc', 'https://amzn.to/3mX66Sz', 'https://amzn.to/3tL8Bey', 'https://amzn.to/39Cal36', 'https://amzn.to/3OobcmJ', 'https://amzn.to/3zIvnrq', 'https://amzn.to/3O3dE25', 'https://amzn.to/3tLOnBr', 'https://amzn.to/3HGHlUn', 'https://amzn.to/3QzyI2a', 'https://amzn.to/3QzyI2a', 'https://amzn.to/3mYrffj', 'https://amzn.to/3tJto2f', 'https://amzn.to/3n0M7T4', 'https://amzn.to/3n0eh0E', 'https://amzn.to/3mYrzL3', 'https://amzn.to/3xZTb8O', 'https://amzn.to/3mZCKTW' ]
+  let amazonlink = document.querySelectorAll('.cta-amazon');
+  amazonlink.forEach(function(link) {
+    let random_url = getRandomInt(links.length);
+    link.href = links[random_url];
+  });
+  function getRandomInt(max) {return Math.floor(Math.random() * max);}
+</script>
